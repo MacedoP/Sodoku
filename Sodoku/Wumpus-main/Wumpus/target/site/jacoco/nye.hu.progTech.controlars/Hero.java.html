@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Hero.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Wumpus</a> &gt; <a href="index.source.html" class="el_package">nye.hu.progTech.controlars</a> &gt; <span class="el_source">Hero.java</span></div><h1>Hero.java</h1><pre class="source lang-java linenums">package nye.hu.progTech.controlars;
+import nye.hu.progTech.Map.World;
+
+import java.util.Random;
+
+
+public class Hero {
+    private int heroX;
+    private int heroY;
+    private char direction;
+    private boolean isAlive;
+    private boolean hasGold;
+    private int arrows;
+
+
+
+
+<span class="fc" id="L18">    public Hero(int x, int y, int numWumpus) {</span>
+<span class="fc" id="L19">        heroX = x;</span>
+<span class="fc" id="L20">        heroY = y;</span>
+<span class="fc" id="L21">        arrows = numWumpus;</span>
+<span class="fc" id="L22">        direction = getRandomDirection();</span>
+<span class="fc" id="L23">        isAlive = true;</span>
+<span class="fc" id="L24">        hasGold = false;</span>
+<span class="fc" id="L25">    }</span>
+
+    public int getHeroX() {
+<span class="fc" id="L28">        return heroX;</span>
+    }
+
+    public int getHeroY() {
+<span class="fc" id="L32">        return heroY;</span>
+    }
+
+    public char getDirection() {
+<span class="fc" id="L36">        return direction;</span>
+    }
+
+    public void setDirection(char direction) {
+<span class="fc" id="L40">        this.direction = direction;</span>
+<span class="fc" id="L41">    }</span>
+
+    public void setHasGold(boolean hasGold) {
+<span class="fc" id="L44">        this.hasGold = hasGold;</span>
+<span class="fc" id="L45">    }</span>
+
+    public int getArrows() {
+<span class="fc" id="L48">        return arrows;</span>
+    }
+
+    public boolean isAlive() {
+<span class="fc" id="L52">        return isAlive;</span>
+    }
+
+    public boolean isHasGold() {
+<span class="fc" id="L56">        return hasGold;</span>
+    }
+
+    public void turnLeft() {
+<span class="pc bpc" id="L60" title="1 of 5 branches missed.">        switch (direction) {</span>
+            case 'N':
+<span class="fc" id="L62">                direction = 'W';</span>
+<span class="fc" id="L63">                break;</span>
+            case 'W':
+<span class="fc" id="L65">                direction = 'S';</span>
+<span class="fc" id="L66">                break;</span>
+            case 'S':
+<span class="fc" id="L68">                direction = 'E';</span>
+<span class="fc" id="L69">                break;</span>
+            case 'E':
+<span class="fc" id="L71">                direction = 'N';</span>
+                break;
+        }
+<span class="fc" id="L74">    }</span>
+
+    public void turnRight() {
+<span class="pc bpc" id="L77" title="4 of 5 branches missed.">        switch (direction) {</span>
+            case 'N':
+<span class="fc" id="L79">                direction = 'E';</span>
+<span class="fc" id="L80">                break;</span>
+            case 'E':
+<span class="nc" id="L82">                direction = 'S';</span>
+<span class="nc" id="L83">                break;</span>
+            case 'S':
+<span class="nc" id="L85">                direction = 'W';</span>
+<span class="nc" id="L86">                break;</span>
+            case 'W':
+<span class="nc" id="L88">                direction = 'N';</span>
+                break;
+        }
+<span class="fc" id="L91">    }</span>
+
+    int newX;
+    int newY;
+<span class="fc" id="L95">    public int steps=0;</span>
+    public void walk(World world) {
+<span class="fc" id="L97">        newX = heroX;</span>
+<span class="fc" id="L98">        newY = heroY;</span>
+
+<span class="fc" id="L100">        int oldx = heroX;</span>
+<span class="fc" id="L101">        int oldy = heroY;</span>
+
+<span class="pc bpc" id="L103" title="3 of 5 branches missed.">        switch (direction) {</span>
+            case 'N':
+<span class="nc" id="L105">                newX--;</span>
+<span class="nc" id="L106">                break;</span>
+            case 'E':
+<span class="fc" id="L108">                newY++;</span>
+<span class="fc" id="L109">                break;</span>
+            case 'S':
+<span class="nc" id="L111">                newX++;</span>
+<span class="nc" id="L112">                break;</span>
+            case 'W':
+<span class="fc" id="L114">                newY--;</span>
+                break;
+        }
+
+<span class="pc bpc" id="L118" title="4 of 8 branches missed.">        if (newX &gt;= 0 &amp;&amp; newX &lt; world.getSize() &amp;&amp; newY &gt;= 0 &amp;&amp; newY &lt; world.getSize()) {</span>
+<span class="fc" id="L119">            char[][] temp = world.getWorld();</span>
+<span class="fc" id="L120">            char newPosition = temp[newX][newY];</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">            if (newPosition != 'U') {</span>
+<span class="fc" id="L122">                System.out.println(&quot;Next Char:&quot; + newPosition);</span>
+                //world.printWorld();
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">                if (newPosition == 'S') {</span>
+<span class="nc" id="L125">                    System.out.println(&quot;You cannot move over stons !!&quot;);</span>
+                } else {
+<span class="fc" id="L127">                    heroX = newX;</span>
+<span class="fc" id="L128">                    heroY = newY;</span>
+                    //world[heroX][heroY] = 'H';
+<span class="fc" id="L130">                    world.setHero(heroX, heroY, oldx, oldy);</span>
+
+
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">                    if (newPosition == 'G') {</span>
+<span class="nc" id="L134">                        hasGold = true;</span>
+<span class="nc" id="L135">                        world.getWorld()[newX][newY] = ' ';</span>
+<span class="nc" id="L136">                        System.out.println(&quot;You have the gold !!&quot;);</span>
+                        }
+<span class="fc" id="L138">                    steps++;</span>
+<span class="fc" id="L139">                    System.out.println(&quot;Step number: &quot; + steps);</span>
+
+<span class="fc" id="L141">                    char ascii= (char)(newY+97);</span>
+<span class="fc" id="L142">                    System.out.println(&quot;The hero position is: &quot;+&quot;X: &quot;+newX+&quot; Y: &quot;+ascii);</span>
+<span class="fc" id="L143">                    }</span>
+            } else {
+<span class="nc" id="L145">                isAlive = false;</span>
+            }
+<span class="fc" id="L147">        } else {</span>
+<span class="nc" id="L148">            System.out.println(&quot; ---------------------------------------------&quot;);</span>
+<span class="nc" id="L149">            System.out.println(&quot; ------- You cannot pass through borders -----&quot;);</span>
+<span class="nc" id="L150">            System.out.println(&quot; ---------------------------------------------&quot;);</span>
+
+        }
+<span class="fc" id="L153">    }</span>
+
+    public void shoot(World world) {
+
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        if (arrows &gt; 0) {</span>
+<span class="fc" id="L158">            char[][] temp = world.getWorld();</span>
+<span class="fc" id="L159">            int x = heroX;</span>
+<span class="fc" id="L160">            int y = heroY;</span>
+
+<span class="pc bpc" id="L162" title="3 of 5 branches missed.">            switch (direction) {</span>
+                case 'N':
+<span class="fc" id="L164">                    x--;</span>
+<span class="fc" id="L165">                    break;</span>
+                case 'E':
+<span class="nc" id="L167">                    y++;</span>
+<span class="nc" id="L168">                    break;</span>
+                case 'S':
+<span class="nc" id="L170">                    x++;</span>
+<span class="nc" id="L171">                    break;</span>
+                case 'W':
+<span class="fc" id="L173">                    y--;</span>
+                    break;
+            }
+
+
+
+<span class="pc bpc" id="L179" title="4 of 8 branches missed.">            if (x &gt;= 0 &amp;&amp; x &lt; world.getSize() &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; world.getSize()) {</span>
+
+<span class="fc" id="L181">                char target = temp[x][y];</span>
+<span class="fc" id="L182">                System.out.println(&quot;char:&quot;+target);</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">                if (target == 'U') {</span>
+<span class="nc" id="L184">                    System.out.println(&quot;You shot the Wumpus! It's defeated!&quot;);</span>
+<span class="nc" id="L185">                    world.getWorld()[x][y] = ' ';</span>
+                } else {
+<span class="fc" id="L187">                System.out.println(&quot;Your shot missed. There's nothing to hit.&quot;);</span>
+                }
+
+<span class="fc" id="L190">                System.out.println(&quot;Next Char:&quot; + target);</span>
+
+<span class="fc" id="L192">            } else {</span>
+<span class="nc" id="L193">            System.out.println(&quot;You cannot shoot outside of the world boundaries.&quot;);</span>
+
+            }
+<span class="fc" id="L196">        arrows--;</span>
+<span class="fc" id="L197">        System.out.println(&quot;You have &quot; + arrows + &quot; arrows left.&quot;);</span>
+<span class="fc" id="L198">    } else {</span>
+<span class="fc" id="L199">        System.out.println(&quot;You have no arrows left. Cannot shoot.&quot;);</span>
+        }
+<span class="fc" id="L201">    }</span>
+
+
+
+    public char getRandomDirection() {
+<span class="fc" id="L206">        char[] directions = {'N', 'S', 'E', 'W'};</span>
+<span class="fc" id="L207">        Random random = new Random();</span>
+<span class="fc" id="L208">        int randomIndex = random.nextInt(directions.length);</span>
+<span class="fc" id="L209">        return directions[randomIndex];</span>
+    }
+
+
+
+    public void haveGold(){
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        if (hasGold){</span>
+<span class="fc" id="L216">            System.out.println(&quot;the hero have Gold lets back to safe zone !!!&quot;);</span>
+        }else {
+<span class="fc" id="L218">            System.out.println(&quot;Bag is empty !!!&quot;);</span>
+        }
+<span class="fc" id="L220">    }</span>
+
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

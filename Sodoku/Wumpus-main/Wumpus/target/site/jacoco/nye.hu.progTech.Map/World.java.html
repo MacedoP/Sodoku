@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>World.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Wumpus</a> &gt; <a href="index.source.html" class="el_package">nye.hu.progTech.Map</a> &gt; <span class="el_source">World.java</span></div><h1>World.java</h1><pre class="source lang-java linenums">package nye.hu.progTech.Map;
+
+
+import nye.hu.progTech.controlars.Hero;
+import nye.hu.progTech.database.DatabaseConnection;
+
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import java.io.File;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Random;
+import java.util.Scanner;
+
+public class World {
+    private char[][] world;
+    private int size;
+    private int numWumpus;
+    private Hero hero;
+    private int initialHeroX;
+    private int initialHeroY;
+    // Instance of the Saver class
+
+
+
+
+
+
+<span class="fc" id="L31">    public World(int size) {</span>
+<span class="fc" id="L32">        this.size = size;</span>
+<span class="fc" id="L33">        this.world = new char[size][size];</span>
+        // Initialize the Saver instance
+        // Initialize the world based on the provided size.
+<span class="fc" id="L36">        initializeWorld();</span>
+<span class="fc" id="L37">    }</span>
+
+
+    public void setHero(int x, int y, int xold, int yold) {
+<span class="fc" id="L41">        world[x][y] = 'H';</span>
+<span class="fc" id="L42">        world[xold][yold] = ' ';</span>
+<span class="fc" id="L43">    }</span>
+
+    public char[][] getWorld() {
+<span class="fc" id="L46">        return world;</span>
+    }
+
+    public int getSize() {
+<span class="fc" id="L50">        return size;</span>
+    }
+
+
+    public void setxStone1(int xStone1) {
+<span class="fc" id="L55">        this.xStone1 = xStone1;</span>
+<span class="fc" id="L56">    }</span>
+
+    public void setyStone1(int yStone1) {
+<span class="fc" id="L59">        this.yStone1 = yStone1;</span>
+<span class="fc" id="L60">    }</span>
+
+    public int getxStone1() {
+<span class="fc" id="L63">        return xStone1;</span>
+    }
+
+    public int getyStone1() {
+<span class="fc" id="L67">        return yStone1;</span>
+    }
+
+    public int getNumWumpus() {
+<span class="fc" id="L71">        return numWumpus;</span>
+    }
+
+    public void initializeWorld() {
+        // Determine the number of Wumpus and Stones based on the size.
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (size &lt;= 8) {</span>
+<span class="fc" id="L77">            numWumpus = 1;</span>
+
+<span class="pc bpc" id="L79" title="1 of 4 branches missed.">        } else if (size &gt;= 9 &amp;&amp; size &lt;= 14) {</span>
+<span class="fc" id="L80">            numWumpus = 2;</span>
+
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        } else if (size &gt;= 15) {</span>
+<span class="fc" id="L83">            numWumpus = 3;</span>
+
+        }
+
+        // Create the world grid and populate it with empty spaces.
+<span class="fc" id="L88">        world = new char[size][size];</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            for (int j = 0; j &lt; size; j++) {</span>
+<span class="fc" id="L91">                world[i][j] = ' ';</span>
+            }
+        }
+
+        // Place characters in the world.
+<span class="fc" id="L96">        placeCharacterU('U', numWumpus);</span>
+<span class="fc" id="L97">        placeCharacterS1('S');</span>
+<span class="fc" id="L98">        placeCharacterS2('S');</span>
+<span class="fc" id="L99">        placeCharacterS3('S');</span>
+<span class="fc" id="L100">        placeCharacterG('G', 1);</span>
+<span class="fc" id="L101">        placeCharacterH('H');</span>
+<span class="fc" id="L102">    }</span>
+
+    public int getRandomNumberEasy() {
+
+<span class="fc" id="L106">        Random random = new Random();</span>
+<span class="fc" id="L107">        int min = 5;</span>
+<span class="fc" id="L108">        int max = 8;</span>
+
+<span class="fc" id="L110">        int randomNum = random.nextInt((max - min) + 1) + min;</span>
+
+<span class="fc" id="L112">        return randomNum;</span>
+    }
+
+    public int getRandomNumberNormal() {
+<span class="fc" id="L116">        Random random = new Random();</span>
+<span class="fc" id="L117">        int min = 9;</span>
+<span class="fc" id="L118">        int max = 14;</span>
+<span class="fc" id="L119">        int randomnum = random.nextInt((max - min) + 1) + min;</span>
+<span class="fc" id="L120">        return randomnum;</span>
+
+    }
+
+    public int getRandomNumberHard() {
+<span class="fc" id="L125">        Random random = new Random();</span>
+<span class="fc" id="L126">        return random.nextInt(15 - 4) + 4;</span>
+    }
+
+    public int xGold;
+    public int yGold;
+    public void placeCharacterG(char character, int count) {
+<span class="fc" id="L132">        Random random = new Random();</span>
+<span class="fc" id="L133">        int remainingCount = count;</span>
+
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        while (remainingCount &gt; 0) {</span>
+<span class="fc" id="L136">            xGold = random.nextInt(size);</span>
+<span class="fc" id="L137">            yGold = random.nextInt(size);</span>
+
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            if (world[xGold][yGold] == ' ') {</span>
+<span class="fc" id="L140">                world[xGold][yGold] = character;</span>
+<span class="fc" id="L141">                remainingCount--;</span>
+            }
+        }
+<span class="fc" id="L144">    }</span>
+
+
+    public int xStone1;
+    public int yStone1;
+    public void placeCharacterS1(char character) {
+<span class="fc" id="L150">        Random random = new Random();</span>
+
+<span class="fc" id="L152">        xStone1 = random.nextInt(size);</span>
+<span class="fc" id="L153">        yStone1 = random.nextInt(size);</span>
+
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (world[xStone1][yStone1] == ' ') {</span>
+<span class="fc" id="L156">            world[xStone1][yStone1] = character;</span>
+        }
+
+<span class="fc" id="L159">    }</span>
+
+    public int xStone2;
+    public int yStone2;
+    public void placeCharacterS2(char character) {
+<span class="fc" id="L164">        Random random = new Random();</span>
+
+<span class="fc" id="L166">        xStone2 = random.nextInt(size);</span>
+<span class="fc" id="L167">        yStone2 = random.nextInt(size);</span>
+
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (world[xStone2][yStone2] == ' ') {</span>
+<span class="fc" id="L170">            world[xStone2][yStone2] = character;</span>
+        }
+
+<span class="fc" id="L173">    }</span>
+
+    public int xStone3;
+    public int yStone3;
+    public void placeCharacterS3(char character) {
+<span class="fc" id="L178">        Random random = new Random();</span>
+
+<span class="fc" id="L180">        xStone3 = random.nextInt(size);</span>
+<span class="fc" id="L181">        yStone3 = random.nextInt(size);</span>
+
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">        if (world[xStone3][yStone3] == ' ') {</span>
+<span class="fc" id="L184">            world[xStone3][yStone3] = character;</span>
+        }
+
+<span class="fc" id="L187">    }</span>
+
+    public int xU;
+    public int yU;
+    public void placeCharacterU(char character, int count) {
+<span class="fc" id="L192">        Random random = new Random();</span>
+<span class="fc" id="L193">        int remainingCount = count;</span>
+
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        while (remainingCount &gt; 0) {</span>
+<span class="fc" id="L196">            xU = random.nextInt(size);</span>
+<span class="fc" id="L197">            yU = random.nextInt(size);</span>
+
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">            if (world[xU][yU] == ' ') {</span>
+<span class="fc" id="L200">                world[xU][yU] = character;</span>
+<span class="fc" id="L201">                remainingCount--;</span>
+            }
+        }
+<span class="fc" id="L204">    }</span>
+
+    public void placeCharacterH(char character) {
+<span class="fc" id="L207">        Random random = new Random();</span>
+<span class="fc" id="L208">        initialHeroX = random.nextInt(size);</span>
+<span class="fc" id="L209">        initialHeroY = random.nextInt(size);</span>
+<span class="fc" id="L210">        world[initialHeroX][initialHeroY] = character;</span>
+<span class="fc" id="L211">        hero = new Hero(initialHeroX, initialHeroY, numWumpus);</span>
+<span class="fc" id="L212">    }</span>
+
+    public void printWorld() {
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        for (int i = -1; i &lt;= size; i++) {</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">            for (int j = -1; j &lt;= size; j++) {</span>
+<span class="fc" id="L217">                char borderChar = 'W';</span>
+
+<span class="fc bfc" id="L219" title="All 8 branches covered.">                if (i &gt;= 0 &amp;&amp; i &lt; size &amp;&amp; j &gt;= 0 &amp;&amp; j &lt; size) {</span>
+<span class="fc" id="L220">                    borderChar = world[i][j];</span>
+                }
+
+<span class="fc" id="L223">                System.out.print(borderChar + &quot; &quot;);</span>
+            }
+<span class="fc" id="L225">            System.out.println();</span>
+
+        }
+<span class="fc" id="L228">        System.out.println(&quot;Current direction:&quot; + hero.getDirection());</span>
+<span class="fc" id="L229">    }</span>
+
+    public void hint(){
+<span class="nc" id="L232">        int asciivalue= initialHeroY+97;</span>
+<span class="nc" id="L233">        char ypos = (char)asciivalue;</span>
+<span class="nc" id="L234">        System.out.println(&quot;You have to take the gold and go back to position: &quot;+&quot;X: &quot;+ initialHeroX +&quot; and &quot;+ &quot;Y: &quot;+ypos);</span>
+<span class="nc" id="L235">    }</span>
+
+    public String fileName;
+    public void saveWorld() {
+<span class="nc" id="L239">        System.out.println(&quot;Enter the file name to save the game state: &quot;);</span>
+<span class="nc" id="L240">        Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L241">        fileName = scanner.nextLine();</span>
+
+<span class="nc" id="L243">        DatabaseConnection connectNow = new DatabaseConnection();</span>
+<span class="nc" id="L244">        Connection connectDB = connectNow.getConnection();</span>
+
+<span class="nc" id="L246">        String insert = &quot;insert status (heroX,heroY,steps,size,xGold,yGold,xStone1,yStone1,xU,yU,xStone2,yStone2,xStone3,yStone3,name,direction,initialX,initialY,arrows) values(&quot;</span>
+<span class="nc" id="L247">                +hero.getHeroX()+&quot;,&quot;</span>
+<span class="nc" id="L248">                +hero.getHeroY()+&quot;,&quot;</span>
+                +hero.steps+&quot;,&quot;
+                +size+&quot;,&quot;
+                +xGold+&quot;,&quot;
+                +yGold+&quot;,&quot;
+                +xStone1+&quot;,&quot;
+                +yStone1+&quot;,&quot;
+                +xU+&quot;,&quot;
+                +yU+&quot;,&quot;+
+                +xStone2+&quot;,&quot;
+                +yStone2+&quot;,&quot;
+                +xStone3+&quot;,&quot;
+                +yStone3+&quot;,'&quot;
+                +fileName+&quot;','&quot;
+<span class="nc" id="L262">                +hero.getDirection()+&quot;',&quot;</span>
+                +initialHeroX+&quot;,&quot;
+                +initialHeroY+&quot;,&quot;
+<span class="nc" id="L265">                +hero.getArrows()+&quot;)&quot;;</span>
+        try {
+<span class="nc" id="L267">            Statement statement = connectDB.createStatement();</span>
+<span class="nc" id="L268">            statement.executeUpdate(insert);</span>
+
+<span class="nc" id="L270">        } catch (Exception e) {</span>
+<span class="nc" id="L271">            System.out.println(e);</span>
+<span class="nc" id="L272">        }</span>
+<span class="nc" id="L273">    }</span>
+
+    public void play() {
+
+
+<span class="nc" id="L278">        Scanner scanner = new Scanner(System.in);</span>
+        String input;
+<span class="nc" id="L280">        boolean gameOver = false;</span>
+<span class="nc" id="L281">        printWorld();</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">        while (!gameOver) {</span>
+
+<span class="nc" id="L284">            System.out.println(&quot;Enter a command: (turn left, turn right, walk, shoot ,'bag', 'hint','save', give up)&quot;);</span>
+<span class="nc" id="L285">            input = scanner.nextLine().toLowerCase();</span>
+
+<span class="nc bnc" id="L287" title="All 9 branches missed.">            switch (input) {</span>
+                case &quot;turn left&quot;:
+<span class="nc" id="L289">                    hero.turnLeft();</span>
+<span class="nc" id="L290">                    break;</span>
+                case &quot;turn right&quot;:
+<span class="nc" id="L292">                    hero.turnRight();</span>
+<span class="nc" id="L293">                    break;</span>
+                case &quot;walk&quot;:
+<span class="nc" id="L295">                    hero.walk(this);</span>
+<span class="nc" id="L296">                    break;</span>
+                case &quot;shoot&quot;:
+<span class="nc" id="L298">                    hero.shoot(this);</span>
+<span class="nc" id="L299">                    break;</span>
+                case &quot;bag&quot;:
+<span class="nc" id="L301">                    hero.haveGold();</span>
+<span class="nc" id="L302">                    break;</span>
+                case &quot;hint&quot;:
+<span class="nc" id="L304">                    hint();</span>
+<span class="nc" id="L305">                    break;</span>
+                case &quot;save&quot;:
+<span class="nc" id="L307">                    saveWorld();</span>
+<span class="nc" id="L308">                    gameOver = true;</span>
+<span class="nc" id="L309">                    break;</span>
+                case &quot;give up&quot;:
+<span class="nc" id="L311">                    System.out.println(&quot;Are you sure you want to give up? (yes or no)&quot;);</span>
+<span class="nc" id="L312">                    String giveUpChoice = scanner.nextLine().toLowerCase();</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">                    if (giveUpChoice.equals(&quot;yes&quot;)) {</span>
+<span class="nc" id="L314">                        gameOver = true;</span>
+                    }
+                    break;
+                default:
+<span class="nc" id="L318">                    System.out.println(&quot;Invalid command. Please use 'turn left', 'turn right', 'walk', 'bag', 'hint', 'give up'.&quot;);</span>
+            }
+<span class="nc bnc" id="L320" title="All 2 branches missed.">            if (gameOver == false){</span>
+<span class="nc" id="L321">                printWorld();</span>
+            }
+
+<span class="nc bnc" id="L324" title="All 2 branches missed.">            if (!hero.isAlive()) {</span>
+<span class="nc" id="L325">                System.out.println(&quot;Game over! The hero is dead.&quot;);</span>
+<span class="nc" id="L326">                System.out.println(&quot;Do you want to play again? (yes or no)&quot;);</span>
+<span class="nc" id="L327">                input = scanner.nextLine().toLowerCase();</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">                if (input.equals(&quot;yes&quot;)) {</span>
+<span class="nc" id="L329">                    hero = new Hero(initialHeroX, initialHeroY, numWumpus);</span>
+<span class="nc" id="L330">                    initializeWorld();</span>
+<span class="nc" id="L331">                    printWorld();</span>
+                } else {
+<span class="nc" id="L333">                    gameOver = true;</span>
+                }
+            }
+<span class="nc bnc" id="L336" title="All 6 branches missed.">            if (initialHeroX == hero.getHeroX() &amp;&amp; initialHeroY == hero.getHeroY() &amp;&amp; hero.isHasGold() == true){</span>
+<span class="nc" id="L337">                System.out.println(&quot;Congratulation !!! You won !! Your sccore is: &quot;+ hero.steps);</span>
+
+<span class="nc" id="L339">                Scanner player = new Scanner(System.in);</span>
+<span class="nc" id="L340">                System.out.println(&quot;Please enter your name:&quot;);</span>
+<span class="nc" id="L341">                String name = scanner.nextLine();</span>
+<span class="nc" id="L342">                scanner.close();</span>
+
+<span class="nc" id="L344">                addRank(name,hero.steps);</span>
+
+
+<span class="nc" id="L347">                System.exit(0);</span>
+<span class="nc" id="L348">            }</span>
+        }
+<span class="nc" id="L350">    }</span>
+
+    public void addRank(String name, int num) {
+
+<span class="nc" id="L354">        DatabaseConnection connectNow = new DatabaseConnection();</span>
+<span class="nc" id="L355">        Connection connectDB = connectNow.getConnection();</span>
+
+<span class="nc" id="L357">        String insert = &quot;insert into rank_tb(playerName, points) values('&quot; + name + &quot;','&quot; + num + &quot;');&quot;;</span>
+
+        try {
+<span class="nc" id="L360">            Statement statement = connectDB.createStatement();</span>
+<span class="nc" id="L361">            statement.executeUpdate(insert);</span>
+
+<span class="nc" id="L363">        } catch (Exception e) {</span>
+<span class="nc" id="L364">            System.out.println(e);</span>
+<span class="nc" id="L365">        }</span>
+<span class="nc" id="L366">    }</span>
+
+    public void reviwe(){
+<span class="nc" id="L369">        DatabaseConnection connectNow = new DatabaseConnection();</span>
+<span class="nc" id="L370">        Connection connectDB = connectNow.getConnection();</span>
+
+
+        try {
+
+<span class="nc" id="L375">            Statement statement = connectDB.createStatement();</span>
+<span class="nc" id="L376">            ResultSet resultSet = statement.executeQuery(&quot;SELECT * FROM rank_tb&quot;);</span>
+
+<span class="nc bnc" id="L378" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc" id="L379">                String column1Value = resultSet.getString(&quot;playerName&quot;);</span>
+<span class="nc" id="L380">                int column2Value = resultSet.getInt(&quot;points&quot;);</span>
+
+<span class="nc" id="L382">                System.out.println(&quot; player name : &quot; + column1Value + &quot;  Points: &quot; + column2Value);</span>
+<span class="nc" id="L383">            }</span>
+
+<span class="nc" id="L385">        }catch (Exception e){</span>
+<span class="nc" id="L386">            System.out.println(e);</span>
+<span class="nc" id="L387">        }</span>
+<span class="nc" id="L388">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

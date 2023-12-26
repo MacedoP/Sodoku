@@ -1,0 +1,7 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Wumpus,nye.hu.progTech,Main,16,0,0,0,5,0,2,0,2,0
+Wumpus,nye.hu.progTech.Map,Load,389,417,48,42,121,111,40,35,4,18
+Wumpus,nye.hu.progTech.Map,World,312,459,32,33,90,97,27,34,5,20
+Wumpus,nye.hu.progTech.database,DatabaseConnection,10,19,0,0,3,8,0,2,0,2
+Wumpus,nye.hu.progTech.Start,Menu,181,0,11,0,62,0,12,0,3,0
+Wumpus,nye.hu.progTech.controlars,Hero,74,300,23,25,24,85,23,22,0,15
