@@ -3,6 +3,12 @@
 -- Host: 127.0.0.1    Database: wumpus_db
 -- ------------------------------------------------------
 -- Server version	8.0.35
+/*
+
+Esse arquivo é um dump do MySQL, uma representação em texto do banco de dados,
+incluindo a estrutura das tabelas e os dados nelas contidos.
+O dump geralmente é usado para fazer backup ou migrar dados entre sistemas.
+*/
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -37,7 +43,7 @@ CREATE TABLE `rank_tb` (
 
 LOCK TABLES `rank_tb` WRITE;
 /*!40000 ALTER TABLE `rank_tb` DISABLE KEYS */;
-INSERT INTO `rank_tb` VALUES (1,'omar','10'),(2,'miklos','6'),(3,'Ali','4'),(4,'Bayan','12'),(5,'mark','8'),(6,'mohammed','6'),(7,'ss','10'),(8,'ss','10'),(9,'ss','10'),(10,'ss','10'),(11,'aa','8'),(12,'ss','12'),(13,'kk','4'),(14,'gg','6');
+INSERT INTO `rank_tb` VALUES (1,'macedo','10'),(2,'janos','6'),(3,'carlos','4'),(4,'osvaldo','12'),(5,'marksman','8'),(6,'mateus','6'),(7,'ss','10'),(8,'ss','10'),(9,'ss','10'),(10,'ss','10'),(11,'aa','8'),(12,'ss','12'),(13,'kk','4'),(14,'gg','6');
 /*!40000 ALTER TABLE `rank_tb` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
